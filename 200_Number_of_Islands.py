@@ -1,5 +1,5 @@
 #200_Number_of_Islands
-
+ 
 def func_(grid, i, j):
     if grid[i][j] == '1':
         grid[i][j] = '2'
