@@ -1,5 +1,5 @@
 #34 Count and say
-
+ 
 class Solution:
     def countAndSay(self, n: int) -> str:
         stri = "1"
