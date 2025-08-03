@@ -1,34 +1,43 @@
-#909 Snakes and Ladders
+### 909 Snakes And Ladders
+
+from collections import deque
 
 class Solution:
-    def snakesAndLadders(self, board: List[List[int]]) -> int:
-        maxnum = len(board) ** 2
 
-        n = 0
-        graph = [None] * (maxnum + 6)
-        for i, row in enumerate(reversed(board)):
-            for el in row[::-1 if i % 2 else 1]:
-                n += 1
-                if el > 0:
-                    graph[n] = el
+    def snakesAndLadders(self, board):
+        n = len(board)
+        min_target = [-1] * (n * n)
+        print(min_target)
+        q = deque()
+        min_target[1] = 0
+        q.append(1)
 
-        curset , nextset = {1}, set()
-        visited = {1}
-        cntr = 0
-
-        while curset and maxnum not in curset:
-            for num in curset:
-                for next_num in range(num + 1, num + 7):
-                    if graph[next_num]:
-                        next_num = graph[next_num]
-                    if next_num not in visited:
-                        nextset.add(next_num)
-                        visited.add(next_num)
+        while q:
+            curr = q.popleft()
             
-            curset.clear()
-            curset, nextset = nextset, curset
-            cntr += 1
- 
-        return  cntr if curset else -1
+            for k in range(curr + 1, curr + 7):
+                if k > n * n:
+                    break
+                row = (k - 1) // n
+                col = (k - 1) % n
 
-#82ms faster than 97.62%, 16.8MB memory less than 37.71%
+                if row % 2 == 0:
+                    v = board[n - 1 - row][col]
+                else:
+                    v = board[n - 1- row][n - 1 - col]
+                
+                if v > 0:
+                    y = v
+                else:
+                    y = k
+                
+                if y == n * n:
+                    return min_target[curr] + 1
+
+                if min_target[y] == -1:
+                    min_target[y] = min_target[curr] + 1
+                    q.append(y)
+
+        return -1
+
+### Faster than 91,67%, lower mem than 92,52%
