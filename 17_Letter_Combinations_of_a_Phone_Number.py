@@ -1,33 +1,35 @@
 #17. Letter combinations of a Phone Number
-class Solution:
-    list_ = {
-        '2': "abc",
-        '3': "def",
-        '4': "ghi",
-        '5': "jkl",
-        '6': "mno",
-        '7': "pqrs",
-        '8': "tuv",
-        '9': "wxyz"
-    }
-    def letterCombinations(self, digits: str) -> List[str]:
-        arr = []
-        if not digits:
-            return None
-        if len(digits) == 1:
-            return list(self.list_[digits])
-        arr = list(self.list_[digits[len(digits) - 1]])
-        for i in range(len(digits) - 2, -1, -1):
-            len_ = len(arr)
-            arr1 = arr.copy()
-            for j in range(len(self.list_[digits[i]]) - 1):
-                arr += arr1
-            q = 0
-            for char_ in Solution.list_[digits[i]]:
-                for l in range(len_):
-                    arr[q] = char_ + arr[q]
-                    q += 1
-        return arr
+class Solution(object):
+    def letterCombinations(self, digits):
+        """
+        :type digits: str
+        :rtype: List[str]
+        """
+        dicti = {
+            '2': 'abc',
+            '3': 'def',
+            '4': 'ghi',
+            '5': 'jkl',
+            '6': 'mno',
+            '7': 'pqrs',
+            '8': 'tuv',
+            '9': 'wxyz'
+        }
 
-##Runtime: 38 ms, faster than 57.58% of Python3 online submissions for Letter Combinations of a Phone Number.
-#Memory Usage: 16.3 MB, less than 61.61% of Python3 online submissions for Letter Combinations of a Phone Number.
+        out = [""]
+        prev_out_len = 1
+
+        if digits is None or len(digits) == 0:
+            return []
+        else:
+            for i in range(len(digits) - 1, -1, -1):
+                for j in range(1, len(dicti[digits[i]])):
+                    for k in range(prev_out_len - 1, -1, -1):
+                        out.append(dicti[digits[i]][j] + out[k])
+                for k in range(prev_out_len - 1, -1, -1):
+                    out[k] = dicti[digits[i]][0] + out[k]
+                prev_out_len = len(out)
+            return out
+
+##Runtime: 0 ms, faster than 100% of Python3 online submissions for Letter Combinations of a Phone Number.
+#Memory Usage: 12.17 MB, less than 99.97% of Python3 online submissions for Letter Combinations of a Phone Number.
